@@ -1,14 +1,15 @@
 body {
     margin: 0;
-    /* ensure navbar sits flush and spacing is predictable */
-
     background-color: rgb(227, 224, 206);
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .navbar {
     background-color: rgb(250, 253, 151);
     overflow: hidden;
-    width: 100vw;
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
@@ -19,7 +20,7 @@ body {
     align-items: center;
     justify-content: flex-start;
     height: 72px;
-    /* explicit height used for the content offset */
+    box-sizing: border-box;
 }
 
 .navbar a {
@@ -185,11 +186,13 @@ body {
     text-align: center;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     margin-top: 2rem;
     margin: 0 auto;
     max-width: 980px;
     position: relative;
-
+    box-sizing: border-box;
+    padding: 0 1rem;
 }
 
 .service-card {
@@ -216,10 +219,13 @@ body {
     text-align: center;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     margin-top: 2rem;
     margin: 0 auto;
     max-width: 980px;
     position: relative;
+    box-sizing: border-box;
+    padding: 0 1rem;
 }
 
 .course-card {
@@ -227,11 +233,9 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
     padding: 1rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
     margin: 1rem;
-    display: block;
-    color: inherit;
+    flex: 1;
+    max-height: 1200px;
     text-decoration: none;
 }
 
@@ -275,10 +279,18 @@ body {
 
 
 @media (max-width: 600px) {
+    body {
+        width: 100vw;
+        overflow-x: hidden;
+    }
+
     .navbar {
         flex-direction: column;
         align-items: flex-start;
         height: auto;
+        padding: 0 16px;
+        width: 100vw;
+        box-sizing: border-box;
     }
 
     .navbar a {
@@ -295,5 +307,21 @@ body {
 
     .navbar.responsive a {
         display: block;
+    }
+
+    .container {
+        width: 100vw;
+        box-sizing: border-box;
+        padding-left: 0;
+        padding-right: 0;
+        max-width: 100vw;
+    }
+
+    .services,
+    .courses {
+        width: 100vw;
+        box-sizing: border-box;
+        padding: 0 16px;
+        max-width: 100vw;
     }
 }
