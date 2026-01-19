@@ -91,40 +91,40 @@ body {
 
 .slider-track {
     display: flex;
-    align-items: center;
-    /* center vertically so contained images don't stick to top */
-    justify-content: center;
-    /* center horizontally */
+    align-items: stretch;
+    /* ensure each slide fills the slider height */
+    justify-content: flex-start;
+    /* track must line up slides horizontally for translateX to work */
     height: 100%;
     width: auto;
-    /* allow JS to set total track width (slides * 100%) */
+    /* let flex children determine total width (N * 100%) */
+    gap: 0;
+    transition: transform 0.5s ease;
+    /* enable sliding animation */
 }
 
 .slider-track>* {
     flex: 0 0 100%;
+    /* each slide is exactly the slider width */
     height: 100%;
-    display: flex;
-    /* use flex so child img can be centered */
-    align-items: center;
-    justify-content: center;
+    display: block;
+    /* allow JS to measure widths reliably */
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-/* show full image without cropping, keep it inside slider bounds */
+/* images: fill each slide box but keep full image visible */
 .slider-track img,
 .slider img {
-    object-fit: contain;
-    /* show whole image */
-    object-position: center;
-    width: auto;
-    /* let aspect ratio decide width */
+    width: 100%;
     height: 100%;
-    /* fill slider height but not overflow */
+    object-fit: contain;
+    object-position: center;
+    display: block;
     max-width: 100%;
     max-height: 100%;
-    display: block;
-    background-color: #000;
-    /* optional letterbox color */
-    pointer-events: none;
+    background: transparent;
 }
 
 /* center the nav dots horizontally */
