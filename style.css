@@ -359,21 +359,62 @@ svg {
     display: block;
 }
 
-/* ensure slider-wrapper scales inside container and never exceeds available width */
+/* make each slide show only the image (no gutters, shadows, controls, captions) */
 .slider-wrapper {
-    width: 100%;
-    max-width: 1100px;
-    /* restore intended max width */
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 0;
-    padding-right: 0;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+    padding: 0;
+    margin: 0 auto;
+    background: transparent;
 }
 
-/* ensure slider fills its wrapper */
 .slider {
-    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.slider-track {
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: auto;
+}
+
+.slider-track>* {
+    flex: 0 0 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+}
+
+.slider-track img,
+.slider img {
+    object-fit: contain;
+    object-position: center;
+    width: auto;
+    height: 100%;
     max-width: 100%;
+    max-height: 100%;
+    display: block;
+    background: transparent;
+}
+
+/* hide UI so only the picture is visible */
+.slider-nav,
+.slider-arrow,
+.slider-caption,
+.slide-caption {
+    display: none !important;
 }
 
 /* portrait phones: a bit taller slider, keep images filling the box */
