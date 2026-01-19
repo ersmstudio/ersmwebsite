@@ -353,10 +353,17 @@ svg {
 
 /* ensure slider-wrapper scales inside container and never exceeds available width */
 .slider-wrapper {
-    max-width: 100%;
     width: 100%;
+    max-width: 1100px;
+    /* restore intended max width */
     margin-left: auto;
     margin-right: auto;
     padding-left: 0;
     padding-right: 0;
+}
+
+/* ensure slider fills its wrapper */
+.slider {
+    width: 100%;
+    max-width: 100%;
 }
