@@ -280,7 +280,7 @@ body {
 
 @media (max-width: 600px) {
     body {
-        width: 100vw;
+        width: 100%;
         overflow-x: hidden;
     }
 
@@ -289,7 +289,7 @@ body {
         align-items: flex-start;
         height: auto;
         padding: 0 16px;
-        width: 100vw;
+        width: 100%;
         box-sizing: border-box;
     }
 
@@ -299,6 +299,8 @@ body {
         text-align: left;
         padding: 8px 4px;
         font-size: 18px;
+        box-sizing: border-box;
+        word-break: break-word;
     }
 
     .menu-icon {
@@ -310,18 +312,51 @@ body {
     }
 
     .container {
-        width: 100vw;
+        width: 100%;
         box-sizing: border-box;
-        padding-left: 0;
-        padding-right: 0;
-        max-width: 100vw;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        max-width: 100%;
     }
 
     .services,
     .courses {
-        width: 100vw;
+        width: 100%;
         box-sizing: border-box;
-        padding: 0 16px;
-        max-width: 100vw;
+        padding: 0 1rem;
+        max-width: 100%;
     }
+
+    .slider,
+    .slider-track {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* added: global box-sizing + responsive media handling */
+html,
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+img,
+picture,
+video,
+svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ensure slider-wrapper scales inside container and never exceeds available width */
+.slider-wrapper {
+    max-width: 100%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
 }
