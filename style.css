@@ -397,7 +397,7 @@ svg {
     background: transparent;
 }
 
-
+.slider-track img,
 .slider img {
     object-fit: contain;
     object-position: center;
