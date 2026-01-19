@@ -91,12 +91,24 @@ body {
 
 .slider-track {
     display: flex;
+    align-items: stretch;
     height: 100%;
-    /* match slider height */
-    width: 300%;
-    /* overwritten by JS to slides.length * 100% */
-    transform: translateX(0);
-    will-change: transform;
+    width: auto;
+    /* allow JS to set total track width (slides * 100%) */
+}
+
+.slider-track>* {
+    flex: 0 0 100%;
+    height: 100%;
+    display: block;
+}
+
+.slider-track img,
+.slider img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 /* ensure each slide fills the full slider area */
