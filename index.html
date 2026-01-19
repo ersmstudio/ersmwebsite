@@ -29,9 +29,10 @@
         <div class="slider-wrapper">
             <div class="slider">
                 <div class="slider-track">
-                    <img id="slide1" src="slide1.jpg" alt="Welcome to our website">
-                    <img id="slide2" src="slide2.jpg" alt="Explore our YouTube Educational channel">
-                    <img id="slide3" src="slide3.jpg" alt="Our first project">
+                    <div class="slide"><img id="slide1" src="slide1.jpg" alt="Welcome to our website"></div>
+                    <div class="slide"><img id="slide2" src="slide2.jpg" alt="Explore our YouTube Educational channel">
+                    </div>
+                    <div class="slide"><img id="slide3" src="slide3.jpg" alt="Our first project"></div>
                 </div>
             </div>
 
@@ -73,42 +74,79 @@
 
             // slider controls: arrows + dots (use track inside .slider so .slider keeps 16/9)
             (function () {
-                const slider = document.querySelector('.slider'); // outer 16/9 box
-                const track = document.querySelector('.slider-track'); // long flex track
-                const slides = Array.from(track.querySelectorAll('img'));
+                const slider = document.querySelector('.slider');
+                const track = document.querySelector('.slider-track');
+                const slides = Array.from(track.querySelectorAll('.slide'));
                 const dots = Array.from(document.querySelectorAll('.slider-nav a'));
                 const btnPrev = document.querySelector('.slider-arrow.left');
                 const btnNext = document.querySelector('.slider-arrow.right');
                 let current = 0;
 
-                const per = 100 / slides.length;
-                track.style.width = `${slides.length * 100}%`;
-                slides.forEach(s => {
-                    s.style.flex = `0 0 ${per}%`;
-                    s.style.maxWidth = `${per}%`;
-                });
-
-                // smooth transform for slide changes
-                track.style.transition = 'transform 450ms ease';
-
-                function goTo(index) {
-                    current = (index + slides.length) % slides.length;
-                    track.style.transform = `translateX(-${current * per}%)`;
-                    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+                function layout() {
+                    const w = Math.floor(slider.clientWidth);
+                    // set track width in px so translate uses px (reliable across devices)
+                    track.style.width = `${w * slides.length}px`;
+                    slides.forEach(s => {
+                        s.style.width = `${w}px`;
+                        s.style.flex = '0 0 auto';
+                    });
+                    moveTo(current, false);
                 }
 
-                dots.forEach((dot, i) => {
-                    dot.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        goTo(i);
-                    });
-                });
+                function moveTo(index, animate = true) {
+                    current = (index + slides.length) % slides.length;
+                    if (!animate) track.style.transition = 'none';
+                    else track.style.transition = 'transform 450ms ease';
+                    track.style.transform = `translate3d(-${current * slider.clientWidth}px, 0, 0)`;
+                    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+                    if (!animate) {
+                        // force reflow then restore transition
+                        // eslint-disable-next-line no-unused-expressions
+                        track.offsetHeight;
+                        track.style.transition = 'transform 450ms ease';
+                    }
+                }
 
-                if (btnPrev) btnPrev.addEventListener('click', () => goTo(current - 1));
-                if (btnNext) btnNext.addEventListener('click', () => goTo(current + 1));
+                window.addEventListener('load', layout);
+                window.addEventListener('resize', layout);
 
-                goTo(0);
+                dots.forEach((dot, i) => dot.addEventListener('click', e => {
+                    e.preventDefault();
+                    moveTo(i);
+                }));
+
+                if (btnPrev) btnPrev.addEventListener('click', () => moveTo(current - 1));
+                if (btnNext) btnNext.addEventListener('click', () => moveTo(current + 1));
+
+                // initial safe call in case images load before 'load' fires
+                setTimeout(() => { if (!track.style.width) layout(); }, 200);
             })();
+            // ===== Mobile Swipe Support =====
+            let startX = 0;
+            let endX = 0;
+
+            const sliderElement = document.querySelector('.slider');
+
+            sliderElement.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+
+            sliderElement.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                if (startX - endX > 50) {
+                    // swipe left → next
+                    document.querySelector('.slider-arrow.right').click();
+                }
+                if (endX - startX > 50) {
+                    // swipe right → previous
+                    document.querySelector('.slider-arrow.left').click();
+                }
+            }
+
         </script>
 </body>
 
