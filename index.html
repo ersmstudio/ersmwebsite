@@ -77,6 +77,7 @@
         }
 
         body {
+            animation: pageLoad 0.5s ease-out;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--primary);
             color: var(--text);
@@ -86,6 +87,17 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        @keyframes pageLoad {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         ::selection {
@@ -2493,6 +2505,55 @@
                 }
             });
         });
+        // Navigation
+        function initNavigation() {
+            const navbar = document.getElementById('navbar');
+            const menuIcon = document.getElementById('menuIcon');
+            const navLinks = document.getElementById('navLinks');
+            let lastScroll = 0;
+
+            menuIcon.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                menuIcon.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    navbar.classList.add('hidden');
+                } else {
+                    navbar.classList.remove('hidden');
+                }
+                
+                lastScroll = currentScroll;
+            });
+
+            // Handle nav links - close mobile menu but DON'T prevent default
+            // Let the browser navigate normally to other pages
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Close mobile menu
+                    navLinks.classList.remove('active');
+                    menuIcon.textContent = '☰';
+                    
+                    // Add a small delay for smooth feel on mobile
+                    if (window.innerWidth <= 968) {
+                        e.preventDefault();
+                        const href = link.getAttribute('href');
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 150);
+                    }
+                });
+            });
+        }
     </script>
 </body>
 </html>
