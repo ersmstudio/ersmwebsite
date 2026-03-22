@@ -20,6 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuth();
 });
 
+async function loadPartial(url, selector) {
+  const res = await fetch(url);
+  if (!res.ok) return console.error('Failed to load', url);
+  document.querySelector(selector).innerHTML = await res.text();
+}
+document.addEventListener('DOMContentLoaded', () => {
+  loadPartial('components/header.html', '#site-header');
+  loadPartial('components/footer.html', '#site-footer'); // optional
+});
+
 // Language Toggle
 function applyLanguage(lang) {
     const config = translations[lang];
@@ -45,18 +55,31 @@ function applyLanguage(lang) {
 function applyTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
 }
-
+// send user preference to server if logged in
+async function savePrefsToServer(prefs) {
+  const token = localStorage.getItem('authToken'); // or rely on cookie
+  if (!token) return;
+  await fetch('/api/user/preferences', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(prefs),
+  });
+}
 // Navigation (shared)
 function initNavigation() {
     const navbar = document.getElementById('navbar');
-    const menuIcon = document.getElementById('menuIcon');
+    const menuBtn = document.getElementById('menuBtn');
     const navLinks = document.getElementById('navLinks');
     let lastScroll = 0;
 
-    if (menuIcon) {
-        menuIcon.addEventListener('click', () => {
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', () => {
+            const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+            menuBtn.setAttribute('aria-expanded', String(!expanded));
             navLinks.classList.toggle('active');
-            menuIcon.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
         });
     }
 
@@ -73,7 +96,7 @@ function initNavigation() {
         link.addEventListener('click', (e) => {
             if (navLinks) {
                 navLinks.classList.remove('active');
-                if (menuIcon) menuIcon.textContent = '☰';
+                if (menuBtn) menuBtn.textContent = '☰';
             }
             if (window.innerWidth <= 968) {
                 e.preventDefault();

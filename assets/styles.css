@@ -347,3 +347,37 @@ footer { padding:3rem 5%; background: var(--secondary); border-top:1px solid var
 /* End of site stylesheet */
 
 /* For brevity: the remaining rules from the original <style> block are copied into this file. */
+
+/* Header / Navbar improvements */
+.logo-img { height: 40px; width: auto; display:inline-block; vertical-align:middle; }
+.logo-text { display:inline-block; margin-left:0.5rem; vertical-align:middle; }
+.logo-main { font-weight:800; letter-spacing:0.02em; }
+.logo-sub { display:block; font-size:0.85rem; color:var(--text-muted); }
+
+/* Layout */
+.nav-left { display:flex; align-items:center; gap:1.25rem; }
+.nav-right { display:flex; align-items:center; gap:0.75rem; }
+
+/* Desktop links */
+.nav-links { list-style:none; display:flex; gap:1rem; align-items:center; }
+.nav-links a { color:var(--text); text-decoration:none; padding:0.35rem 0.25rem; transition:color .2s, transform .12s; border-radius:6px; }
+.nav-links a:hover, .nav-links a:focus { color:var(--accent); transform:translateY(-2px); outline:none; }
+.nav-links a.active { color:var(--accent); font-weight:600; }
+
+/* Mobile menu button */
+.menu-btn { display:none; background:transparent; border:none; font-size:1.3rem; cursor:pointer; padding:0.4rem; border-radius:8px; }
+.menu-btn:focus { outline:2px solid rgba(99,102,241,0.25); }
+
+/* Navbar visual polish */
+.navbar { align-items:center; padding:1rem 5%; transition: all 0.28s var(--ease-out-expo); }
+.navbar.scrolled { box-shadow: var(--shadow-lg); backdrop-filter: blur(8px); }
+
+/* Mobile responsive */
+@media (max-width: 968px) {
+  .nav-links { position:fixed; top:72px; right:0; left:0; background:var(--surface); flex-direction:column; gap:0; padding:1rem; transform:translateY(-10%); opacity:0; pointer-events:none; transition:all .28s; border-bottom-left-radius:12px; border-bottom-right-radius:12px; }
+  .nav-links.active { transform:translateY(0); opacity:1; pointer-events:auto; }
+  .nav-links li { width:100%; }
+  .nav-links a { display:block; padding:0.75rem 1rem; border-radius:8px; }
+  .menu-btn { display:inline-flex; }
+  .auth-buttons { display:none; } /* keep simple on mobile, or show inside menu if desired */
+}
